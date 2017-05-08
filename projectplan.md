@@ -24,6 +24,8 @@ Den huvudsakliga poängen är att få bättre översikt över sina samlade tillg
 Bifogat här är ett exempel på hur en person skulle få översikt över sina tillgångar. Vad jag märkte var att det blev svårt att se de mindre posterna när det finns väldigt stora poster.
 Säg till exempel att man har 100 miljoner i aktiekapital så blir det svårt att få översikt över till exempel ens klocksamling för en bråkdel av detsamma.
 
+![alt text](https://i.gyazo.com/12c4071c86695ddb49373cb9be0f1099.png "graph1")
+
 Tekniskt underbyggande
 Jag vill bygga plattformen med hjälp av möjligtvis Python, Ruby och PHP/MySQL. Till exempel har jag hittat libraries för python med algoritmer för börshandel.
 
