@@ -13,6 +13,7 @@ No other Asset Tracker out there lets you track your
 * shares, 
 * options and 
 * cash 
+
 all in the same application. 
 
 Have an instant overview over your assets, anytime, anywhere.
