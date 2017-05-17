@@ -6,7 +6,7 @@ Det är svårt att hålla sig uppdaterad på alla ens tillgångar (assets) utan 
 Den primära målsättningen är att ge överblick över ens tillgångar, dess ungefärliga värde som användaren själv får undersöka och ange.
 Vidare målsättningar kan vara att hämta dagsaktuellt värde på t.ex. klockor, liknande bilar, tavlor, etc (kommer dock sannolikt att vara för avancerat).
 
-## Scope/omfattning av tänkbara features
+## Vidareutveckling av tänkbara features
 ### Börsspekulation
 Min id´e var från början att bygga en börshandelplatform för att underlätta aktie- och optionshandel, eftersom det är min huvudsakliga inkomst. Ur den aspekten vill jag bygga en applikation som kan spåra flertalet portföljer, göra det möjligt att slå dem samman vare sig kontot ligger på ett konto i Sverige, Schweiz eller Usa, se statistik, etc (vilket är bara ett par fåtal möjligheter jag kan tänka mig). Främst vill jag inkludera funktionen Simple Moving Averages till att börja med och sedan andra mer kortsiktiga indikationer. Sådana applikationer kostar vanligtvis 10k+/år.
 
@@ -21,7 +21,7 @@ Säg till exempel att man har 100 miljoner i aktiekapital så blir det svårt at
 ![alt text](https://i.gyazo.com/12c4071c86695ddb49373cb9be0f1099.png "graph1")
 
 ## Tekniskt underbyggande
-Jag vill bygga plattformen med hjälp av möjligtvis Python, Ruby och PHP/MySQL. Till exempel har jag hittat libraries för python med algoritmer för börshandel.
+Jag vill bygga plattformen med hjälp av Go och MySQL-databas. 
 
 ![alt text](https://i.gyazo.com/d36071bb987bb17ab58e38f4750c432e.png "graph2")
 
