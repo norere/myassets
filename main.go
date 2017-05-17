@@ -4,21 +4,18 @@ import (
 	"fmt"
 
 	"github.com/gin-gonic/gin"
+	"github.com/jmoiron/sqlx"
+	_ "github.com/lib/pq"
 )
 
-// "github.com/jinzhu/gorm"
-// _ "github.com/jinzhu/gorm/dialects/sqlite"
-
-// type Item struct {
-// 	Name  string
-// 	Value int
-// }
+type Item struct {
+	Name  string
+	Value int
+}
 
 // type UserSession struct {
 // 	Items []Item
 // }
-
-// var db *gorm.DB
 
 // type Page struct {
 // 	gorm.Model
@@ -27,31 +24,23 @@ import (
 // 	Body  []byte `gorm:"column:body"`
 // }
 
-func main() {
-	// tempDB, _ := gorm.Open("sqlite3", "book.db")
-	// db = tempDB
-	// defer db.Close()
+const dbURL = "postgres://Nore@localhost:5432/testing?sslmode=disable"
 
-	// db.AutoMigrate(&Page{}) // if there's no table in the db, it will create one
+func main() {
+	db, err := sqlx.Connect("postgres", dbURL)
+
+	if err != nil {
+		panic("failed to connect database")
+	}
+
+	defer db.Close()
+	db.Exec("CREATE TABLE items (name varchar(100), price int)")
+
+	// db.AutoMigrate(&Item{}) // if there's no table in the db, it will create one
 
 	r := gin.Default()
 
 	r.LoadHTMLGlob("templates/*")
-
-	// r.GET("/:title", func(c *gin.Context) {
-	// 	title := c.Param("title")
-
-	// 	var p Page
-
-	// 	if err := db.Where("title = ?", title).First(&p).Error; err != nil {
-	// 		c.AbortWithStatus(404)
-	// 		return
-	// 	}
-
-	// 	c.HTML(200, "view.html", gin.H{
-	// 		"page": p,
-	// 	})
-	// })
 
 	r.GET("/edit/:title/:position", func(c *gin.Context) {
 		// title := c.Param("title")
@@ -65,11 +54,11 @@ func main() {
 
 	r.POST("/", func(c *gin.Context) {
 		name := c.PostForm("item_name")
-		price := c.PostForm("price")
+		value := c.PostForm("value")
 
 		c.HTML(200, "item.tmpl", gin.H{
 			"name":  name,
-			"price": price,
+			"value": value,
 		})
 	})
 
