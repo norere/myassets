@@ -26,17 +26,29 @@ type Item struct {
 
 const dbURL = "postgres://Nore@localhost:5432/testing?sslmode=disable"
 
+var db *sqlx.DB
+var err error
+
+func saveItemToDB(name, value string) (*Item, error) {
+	query := "INSERT INTO items (name, value) VALUES ($1, $2) RETURNING *"
+
+	item := &Item{}
+	err := db.Get(item, query, name, value)
+	if err != nil {
+		return nil, err
+	}
+	return item, nil
+}
+
 func main() {
-	db, err := sqlx.Connect("postgres", dbURL)
+	db, err = sqlx.Connect("postgres", dbURL)
 
 	if err != nil {
 		panic("failed to connect database")
 	}
 
 	defer db.Close()
-	db.Exec("CREATE TABLE items (name varchar(100), price int)")
-
-	// db.AutoMigrate(&Item{}) // if there's no table in the db, it will create one
+	db.Exec("CREATE TABLE items (name varchar(100), value int)")
 
 	r := gin.Default()
 
@@ -53,12 +65,15 @@ func main() {
 	})
 
 	r.POST("/", func(c *gin.Context) {
-		name := c.PostForm("item_name")
-		value := c.PostForm("value")
+		item, err := saveItemToDB(c.PostForm("item_name"), c.PostForm("value"))
+
+		if err != nil {
+			panic(err.Error())
+		}
 
 		c.HTML(200, "item.tmpl", gin.H{
-			"name":  name,
-			"value": value,
+			"name":  item.Name,
+			"value": item.Value,
 		})
 	})
 
