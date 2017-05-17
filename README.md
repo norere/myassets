@@ -25,9 +25,13 @@ http://MyAssets.ninja (domain pending)
 Download the main.go file along with the template folder and place in the same location.
 ### Import and install
 Import the libraries necessary (using the terminal: "go get" and then the address for the library, requires that you have set a GOPATH), given in the "import" section in main.go, at this moment those include:
+
 github.com/gin-gonic/gin
+
 github.com/jmoiron/sqlx
+
 github.com/lib/pq
+
 ### Compile and run
 Build main.go and run.
 ### Enter the web application
