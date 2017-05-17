@@ -1,8 +1,6 @@
 package main
 
 import (
-	"fmt"
-
 	"github.com/gin-gonic/gin"
 	"github.com/jmoiron/sqlx"
 	_ "github.com/lib/pq"
@@ -12,17 +10,6 @@ type Item struct {
 	Name  string
 	Value int
 }
-
-// type UserSession struct {
-// 	Items []Item
-// }
-
-// type Page struct {
-// 	gorm.Model
-
-// 	Title string `gorm:"column:title"`
-// 	Body  []byte `gorm:"column:body"`
-// }
 
 const dbURL = "postgres://Nore@localhost:5432/testing?sslmode=disable"
 
@@ -40,9 +27,26 @@ func saveItemToDB(name, value string) (*Item, error) {
 	return item, nil
 }
 
+func fetchAllItems() []*Item {
+	query := "SELECT * FROM items"
+	items := []*Item{}
+	err := db.Select(&items, query)
+	if err != nil {
+		panic("failed to fetch all items from the database")
+	}
+	return items
+}
+
+func calcTotalItemWorth(items []*Item) int {
+	totalWorth := 0
+	for _, item := range items {
+		totalWorth = totalWorth + item.Value
+	}
+	return totalWorth
+}
+
 func main() {
 	db, err = sqlx.Connect("postgres", dbURL)
-
 	if err != nil {
 		panic("failed to connect database")
 	}
@@ -51,22 +55,24 @@ func main() {
 	db.Exec("CREATE TABLE items (name varchar(100), value int)")
 
 	r := gin.Default()
-
 	r.LoadHTMLGlob("templates/*")
 
-	r.GET("/edit/:title/:position", func(c *gin.Context) {
-		// title := c.Param("title")
-		fmt.Println(c.Accepted)
-		c.HTML(200, "edit.tmpl", gin.H{})
-	})
-
 	r.GET("/", func(c *gin.Context) {
-		c.HTML(200, "index.tmpl", gin.H{})
+		items := fetchAllItems()
+		totalWorth := calcTotalItemWorth(items)
+
+		c.HTML(200, "index.tmpl", gin.H{
+			"items":       items,
+			"total_worth": totalWorth,
+		})
 	})
 
-	r.POST("/", func(c *gin.Context) {
-		item, err := saveItemToDB(c.PostForm("item_name"), c.PostForm("value"))
+	r.GET("/new", func(c *gin.Context) {
+		c.HTML(200, "new.tmpl", gin.H{})
+	})
 
+	r.POST("/new", func(c *gin.Context) {
+		item, err := saveItemToDB(c.PostForm("item_name"), c.PostForm("value"))
 		if err != nil {
 			panic(err.Error())
 		}
@@ -77,7 +83,5 @@ func main() {
 		})
 	})
 
-	// //r.StaticFS("/static", http.Dir("static"))
-
-	r.Run(":8080") //r.Run(":" + os.Getenv("PORT"))
+	r.Run(":8080")
 }
