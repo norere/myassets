@@ -1,0 +1,13 @@
+<html>
+  <head></head>
+  <body>
+    <h2>Welcome!</h2>
+    <ul> 
+      {{ range .items }}
+       <li> {{ .Name }}: {{ .Value }} </li>
+      {{ end }}
+    </ul>
+    <p>Total worth: {{ .total_worth }}</p>
+    <p>[<a href="/new/">Add a new item</a>]</p>
+  </body>
+</html>
